@@ -10,4 +10,5 @@ urlpatterns = [
     path("update-security/<str:pk>/", views.updateSecurity, name="updateSecurity"),
     # path("delete-security/<str:pk>/", views.deleteSecurity, name="deleteSecurity"),
     path("get-dailyprices/<str:pk>/", views.getDailyPrices, name="getDailyPrices"),
+    path("get-period-dailyprices/<str:pk>/<str:start>/<str:end>/", views.getPeriodDailyPrices, name="getPeriodDailyPrices"),
 ]

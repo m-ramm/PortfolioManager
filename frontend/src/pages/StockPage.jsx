@@ -1,6 +1,6 @@
 import React, { useState, useEffect, componentDidMount } from 'react'
-import StockView from './StockView'
-import StockSelecter from './StockSelecter'
+import StockView from '../components/StockView'
+import StockSelecter from '../components/StockSelecter'
 
 const StockPage = () => {
     const [selectedSecurity, setSelectedSecurity] = useState(undefined)
@@ -11,9 +11,10 @@ const StockPage = () => {
 
   return (
     <div>
-        <div>StockPage</div>
-        <StockSelecter security={selectedSecurity} handleSecurityChange={handleSecurityChange}/>
-        <StockView security={selectedSecurity}/>
+      <div className='flex h-screen'>
+          <StockSelecter security={selectedSecurity} handleSecurityChange={handleSecurityChange}/>
+          <StockView security={selectedSecurity}/>
+      </div>
     </div>
   )
 }

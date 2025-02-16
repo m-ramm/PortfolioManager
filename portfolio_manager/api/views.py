@@ -15,7 +15,9 @@ def apiOverview(request):
         'Security' : '/get-security/<str:pk>/',
         'Add Security' : '/add-security/',
         'Update Security' : '/update-security/<str:pk>',
-        'Get Daily Prices' : '/get-dailyprices/<str:pk>'
+        'Get All Security Daily Prices' : '/get-dailyprices/<str:pk>',
+        'Get Period of Daily Prices' : '/get-period-dailyprices/<str:pk>/<str:start>/<str:end>',
+        'Note' : 'Dates in format yyyy-mm-dd'
     }
     return Response(api_urls)
 
@@ -64,7 +66,11 @@ def getDailyPrices(request, pk):
     serializer = DailyPriceSerializer(daily_prices, many=True)
     return Response(serializer.data)
 
-
+@api_view(['GET'])
+def getPeriodDailyPrices(request, pk, start, end):
+    daily_prices = DailyPrice.objects.filter(security_id=pk).filter(dp_date__range=[start, end])
+    serializer = DailyPriceSerializer(daily_prices, many=True)
+    return Response(serializer.data)
 
 
 # class DailyPriceView(APIView):
