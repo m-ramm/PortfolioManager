@@ -5,6 +5,8 @@ import { SyncLoader } from 'react-spinners'
 /*
  TODO:
  - find better way of handling startDate and endDate (allow User to adjust?)
+ - fix overflow-x-auto of the graph when the sidebars are collapsed
+ 
  */
 
 
@@ -77,11 +79,13 @@ const StockView = (props) => {
 
   //! Make it fill to the right.
   return (
-    <div className='flex flex-col h-[calc(100vh-1.5rem)] bg-darker rounded-lg shadow-lg mt-4 mx-2 pt-4 px-2 mb-4'>
-      <div>StockView</div>
-      <div className='flex flex-grow'>
-        {(props.security != undefined) ? (
-          (loading) ? (<div className='flex justify-center items-center mt-8'><SyncLoader color='white' /></div>) : (
+    <div className='flex flex-col grow h-[calc(100vh-1.5rem)] bg-darker rounded-lg shadow-lg mt-4 mx-2 pt-4 px-2 mb-4'>
+      {(props.security != undefined) ? (<div className='text-white font-bold text-lg ms-2 mt-2'>{props.security_name}</div>) : (
+        <div className='text-white font-bold text-lg ms-2 mt-2'>Stock View</div>
+      )}
+      {(props.security != undefined) ? (
+        (loading) ? (<div className='flex grow justify-center items-center'><SyncLoader color='white' /></div>) : (
+          <div className='flex grow justify-center overflow-y-auto overflow-x-auto me-6'>
             <CandleStick series={[
               {
                 name: 'Stock Data',
@@ -89,11 +93,11 @@ const StockView = (props) => {
               }
             ]} 
             />
-          )
-        ) : (
-            <div>Please Select a Stock</div>
-        )}
-      </div>
+          </div>
+        )
+      ) : (
+          <div className='flex grow items-center justify-center text-white font-bold'>Please Select a Stock</div>
+      )}
     </div>
   )
 }

@@ -53,7 +53,7 @@ const StockSelecter = props => {
                         <button
                             key={stock.security_id}
                             className={/*use props.security for conditional formatting of selected item*/''}
-                            onClick={()=> props.handleSecurityChange(stock.security_id)}
+                            onClick={()=> props.handleSecurityChange(stock.security_id, stock.security_name)}
                         >
                             <div className={`flex justify-between px-2 py-3 font-bold transition-colors duration-300 ${isActive ? "text-white" : "text-grey hover:text-white"}`}>
                                 <div className={`flex items-center me-6 text-lg`}>

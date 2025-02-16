@@ -4,17 +4,17 @@ import StockSelecter from '../components/StockSelecter'
 
 const StockPage = () => {
     const [selectedSecurity, setSelectedSecurity] = useState(undefined)
+    const [selectedSecurityName, setSelectedSecurityName] = useState(undefined)
 
-    const handleSecurityChange = (security_id) => {
+    const handleSecurityChange = (security_id, security_name) => {
         setSelectedSecurity(security_id)
+        setSelectedSecurityName(security_name)
     }
 
   return (
-    <div>
-      <div className='flex h-screen'>
-          <StockSelecter security={selectedSecurity} handleSecurityChange={handleSecurityChange}/>
-          <StockView security={selectedSecurity}/>
-      </div>
+    <div className='flex flex-row w-full h-screen'>
+        <StockSelecter security={selectedSecurity} handleSecurityChange={handleSecurityChange}/>
+        <StockView security={selectedSecurity} security_name={selectedSecurityName}/>
     </div>
   )
 }
