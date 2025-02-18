@@ -99,7 +99,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PortfolioSecurity',
             fields=[
-                ('portfolio', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False, to='manager.portfolio')),
+                ('portfolio', models.OneToOneField(on_delete=django.db.models.deletion.DO_NOTHING, primary_key=True, serialize=False, to='api.portfolio')),
                 ('portfolio_security_volume', models.IntegerField()),
             ],
             options={

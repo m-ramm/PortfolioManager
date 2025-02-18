@@ -1,11 +1,20 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import JsonResponse
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .models import *
 from .serializer import *
 from rest_framework import generics
+import json
+from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.http import require_POST
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -17,6 +26,7 @@ def apiOverview(request):
         'Update Security' : '/update-security/<str:pk>',
         'Get All Security Daily Prices' : '/get-dailyprices/<str:pk>',
         'Get Period of Daily Prices' : '/get-period-dailyprices/<str:pk>/<str:start>/<str:end>',
+        'Get Portfolios (requires Authentication)': '/get-portfolios',
         'Note' : 'Dates in format yyyy-mm-dd'
     }
     return Response(api_urls)
@@ -72,6 +82,47 @@ def getPeriodDailyPrices(request, pk, start, end):
     serializer = DailyPriceSerializer(daily_prices, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getPortfolios(request):
+    user = request.user
+    portfolios = user.portfolio_set.all()
+    # portfolios = Portfolio.objects.all()
+    serializer = PortfolioSerializer(portfolios, many=True)
+    return Response(serializer.data)
+
+
+# @require_POST
+# def loginView(request):
+#     data = json.loads(request.body)
+#     username = data.get("username")
+#     password = data.get("password")
+
+#     if username is None or password is None:
+#         return Response("Enter both username and password")
+    
+#     user = authenticate(username=username, password=password)
+#     if user is None:
+#         return Response("invalid credentials") #400 status code
+#     login(request, user)
+#     return Response("Successfully logged in")
+
+# def logoutView(request):
+#     if not request.user.is_authenticated:
+#         return Response("User not logged in") # Status 400
+#     logout(request)
+#     return Response("Successfully logged out")
+
+# @ensure_csrf_cookie
+# def sessionView(request):
+#     if not request.user.is_authenticated:
+#         return JsonResponse({"isauthenticated": False})
+#     return JsonResponse({"isauthenticated": True})
+
+# def identifyUserView(request):
+#     if not request.user.is_authenticated:
+#         return JsonResponse({"isauthenticated": False})
+#     return JsonResponse({"username":request.user.username})
 
 # class DailyPriceView(APIView):
 #     def get(self, request):

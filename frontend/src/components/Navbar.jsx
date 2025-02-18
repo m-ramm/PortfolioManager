@@ -1,21 +1,44 @@
-import React, { useState } from 'react'
-import { Link, useLocation } from 'react-router'
+import React, { useState, useContext } from 'react'
+import ConfirmationModal from './ConfirmationModal';
+import AuthContext from '../context/AuthContext';
+import { Link, useNavigate, useLocation } from 'react-router'
 import { IconContext } from 'react-icons'
 import { AiOutlineStock } from "react-icons/ai";
 import { FaLayerGroup } from "react-icons/fa6";
 import { FaHome } from "react-icons/fa";
 import { FaAngleDoubleLeft } from "react-icons/fa";
-import { RxHamburgerMenu } from "react-icons/rx";
+import { RxHamburgerMenu, RxExit, RxEnter } from "react-icons/rx";
+import { IoInformationCircleOutline } from "react-icons/io5";
+
 
 const Navbar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isLogoutModalOpen, setLogoutModalOpen] = useState(false)
   const location = useLocation(); // Get path
+  const navigate = useNavigate(); // Navigation object
+  const {user, logoutUser} = useContext(AuthContext)
+  let staticNavData;
 
-  const staticNavData = [
-    { title: "Home", path: "/", icon: <FaHome />, cName: "flex text-light hover-text-magenta" },
-    { title: "Securities", path: "/securities", icon: <AiOutlineStock />, cName: "flex text-light hover-text-magenta" },
-    { title: "Portfolios", path: "/portfolios", icon: <FaLayerGroup />, cName: "flex text-light hover-text-magenta"  }
-  ];
+  if (user) {
+    staticNavData = [
+        { title: "Home", path: "/", icon: <FaHome />, cName: "flex text-light hover-text-magenta" },
+        { title: "Securities", path: "/securities", icon: <AiOutlineStock />, cName: "flex text-light hover-text-magenta" },
+        { title: "Portfolios", path: "/portfolios", icon: <FaLayerGroup />, cName: "flex text-light hover-text-magenta"  },
+        { title: "About", path: "/about", icon: <IoInformationCircleOutline />, cName: "flex text-light hover-text-magenta"  },
+        // { title: "Logout", path: "/logout", icon: <RxExit />, cName:"flex text-light hover-text-magenta" }
+    ]
+} else {
+    staticNavData = [
+        { title: "About", path: "/about", icon: <IoInformationCircleOutline />, cName: "flex text-light hover-text-magenta"  },
+        {title: "Login", path: "/login", icon: <RxEnter />, cName:"flex text-light hover-text-magenta" }
+    ]
+  }
+  
+  const handleLogout = () => {
+    setLogoutModalOpen(false)
+    logoutUser()
+    navigate("/login")
+  }
 
   return (
     <div className='flex flex-col h-screen'>
@@ -57,12 +80,28 @@ const Navbar = () => {
                                     </li>
                                 );
                             })}
+                            {user && (
+                                <li key="logout" className="flex text-light hover-text-magenta">
+                                    <button 
+                                        className={`flex items-center space-x-5 ml-0.5 w-full px-4 py-2 mb-2 font-bold text-lg transition-colors duration-300 text-grey hover:text-white"
+                                        }`}
+                                        onClick={()=>setLogoutModalOpen(true)}
+                                    >
+                                        <RxExit />
+                                        {!isCollapsed && <span>Logout</span>}
+                                    </button>
+                                </li>
+                            )}
                         </ul>
                     </nav>
                 </div>
             </div>
         </IconContext.Provider>
-
+        <ConfirmationModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setLogoutModalOpen(false)}
+        onConfirm={handleLogout}
+        />
     </div>
   )
 }
