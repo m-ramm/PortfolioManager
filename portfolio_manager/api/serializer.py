@@ -18,6 +18,12 @@ class PortfolioSerializer(serializers.ModelSerializer):
         model = Portfolio
         fields = '__all__'
 
+class UserFavouriteSecuritiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserFavouriteSecurities
+        fields = '__all__'
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):

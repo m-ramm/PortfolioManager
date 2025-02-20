@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class AuthGroup(models.Model):
@@ -156,7 +157,8 @@ class Exchange(models.Model):
 
 class Portfolio(models.Model):
     portfolio_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey('Users', models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    # user = models.ForeignKey('Users', models.DO_NOTHING)
     portfolio_name = models.CharField(max_length=50)
 
     class Meta:
@@ -209,3 +211,14 @@ class Users(models.Model):
     class Meta:
         managed = False
         db_table = 'users'
+
+class UserFavouriteSecurities(models.Model):
+    # user = models.ForeignKey('Users', models.DO_NOTHING)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    security = models.ForeignKey('Security', models.DO_NOTHING, null=True)
+        
+    class Meta:
+        # Change following to false again?
+        managed = True
+        db_table = 'user_favourite_securities'
+        unique_together = (('user', 'security'),)

@@ -13,7 +13,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from django.core.exceptions import ObjectDoesNotExist
 
 
 @api_view(['GET'])
@@ -27,6 +27,8 @@ def apiOverview(request):
         'Get All Security Daily Prices' : '/get-dailyprices/<str:pk>',
         'Get Period of Daily Prices' : '/get-period-dailyprices/<str:pk>/<str:start>/<str:end>',
         'Get Portfolios (requires Authentication)': '/get-portfolios',
+        'Get Favourites (requires Authentication)': '/get-favourites',
+        'Set Favourite (requires Authentication)': '/set-favourite/<str:security_id>',
         'Note' : 'Dates in format yyyy-mm-dd'
     }
     return Response(api_urls)
@@ -90,6 +92,37 @@ def getPortfolios(request):
     # portfolios = Portfolio.objects.all()
     serializer = PortfolioSerializer(portfolios, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getFavourites(request):
+    user = request.user
+    try:
+        # favourites = user.userfavouritesecurities_set.all()
+        favourites = UserFavouriteSecurities.objects.all().filter(user=user)
+        serializer = UserFavouriteSecuritiesSerializer(favourites, many=True)
+        return Response(serializer.data)
+    except ObjectDoesNotExist: 
+        return Response("Cannot find any favourites for selected user")
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def setFavourite(request, security_id):
+    user = request.user
+    security = Security.objects.get(security_id=security_id)
+    print(user)
+    print(security)
+    try:
+        print('here')
+        favourite = UserFavouriteSecurities.objects.get(user=user,security=security)
+        favourite.delete()
+        print('here')
+        return Response('Successfully deleted favourite')
+    except ObjectDoesNotExist as e:
+        favourite = UserFavouriteSecurities.objects.create(user=user, security=security)
+        print(favourite)
+        # favourite.save()
+        return Response("Successfully added favourite")
 
 
 # @require_POST
