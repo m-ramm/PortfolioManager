@@ -131,14 +131,14 @@ const StockView = (props) => {
   return (
     <div className='flex flex-col grow h-[calc(100vh-1.5rem)] bg-darker rounded-lg shadow-lg mt-4 mx-2 pt-4 px-2 mb-4'>
       {(props.security != undefined) ? (
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-start mb-2'>
           <div className='text-white font-bold text-lg ms-2 mt-2'>{props.security.security_name}</div>
           { 
           //(loading) ? (<div className=''><SyncLoader color='white' /></div>
           //) : ( 
-            (isFavourite) ? (<button onClick={()=>handleFavourite()} className='ms-3 mt-2 text-white'><MdFavorite size={'25px'}/></button>
+            (isFavourite) ? (<button onClick={()=>handleFavourite()} className='ms-6 mt-2 text-white cursor-pointer'><MdFavorite size={'25px'}/></button>
             ) : (
-              <button onClick={()=>handleFavourite()} className='me-2 mt-2 text-white'><MdFavoriteBorder size={'25px'}/></button>
+              <button onClick={()=>handleFavourite()} className='ms-6 mt-2 text-white cursor-pointer'><MdFavoriteBorder size={'25px'}/></button>
             )
           //)
           }

@@ -12,7 +12,7 @@ import AuthContext from './context/AuthContext'
 const App = () => {
   let user = useContext(AuthContext)
   return (
-    <div className='flex h-screen bg-dark'>
+    <div className='flex h-screen bg-dark overflow-x-auto'>
       {//if this.location is LoginPage, then do not render NavBar 
       }
       <Navbar />

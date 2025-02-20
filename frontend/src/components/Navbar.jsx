@@ -83,7 +83,7 @@ const Navbar = () => {
                             {user && (
                                 <li key="logout" className="flex text-light hover-text-magenta">
                                     <button 
-                                        className={`flex items-center space-x-5 ml-0.5 w-full px-4 py-2 mb-2 font-bold text-lg transition-colors duration-300 text-grey hover:text-white"
+                                        className={`flex items-center space-x-5 ml-0.5 w-full px-4 py-2 mb-2 font-bold text-lg transition-colors duration-300 text-grey hover:text-white cursor-pointer text-grey"
                                         }`}
                                         onClick={()=>setLogoutModalOpen(true)}
                                     >
