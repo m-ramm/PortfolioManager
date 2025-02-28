@@ -87,17 +87,20 @@ const StockSelecter = props => {
                 </button>
             </div>
             {!isCollapsed && (
-                <div className='flex flex-col justify-center items-center mt-2 mb-4'>
-                        <input className={`bg-dark text-white font-bold p-2 rounded-lg shadow-lg`} type="text" value={searchVal} onChange={handleSearchInputChange} placeholder='Search...' />
-                        <select name="sector" id="sector" className='bg-dark text-grey font-bold mt-3 p-2 rounded-lg shadow-lg' onChange={handleSectorInputChange}>
-                            <option value="All" selected="selected">All</option>
-                            {sectors.map((sector) => {
-                                return(
-                                    <option value={sector}>{sector}</option>
-                                )
-                            })}
-                        </select>
-                </div>
+                 loading ? (<div className='flex justify-center items-center mt-8'></div>
+                 ) : (
+                    <div className='flex flex-col justify-center items-center mt-2 mb-4'>
+                            <input className={`bg-dark text-white font-bold p-2 rounded-lg shadow-lg`} type="text" value={searchVal} onChange={handleSearchInputChange} placeholder='Search...' />
+                            <select name="sector" id="sector" className='bg-dark text-grey font-bold mt-3 p-2 rounded-lg shadow-lg' onChange={handleSectorInputChange}>
+                                <option value="All" selected="selected">All</option>
+                                {sectors.map((sector) => {
+                                    return(
+                                        <option value={sector}>{sector}</option>
+                                    )
+                                })}
+                            </select>
+                    </div>
+                )
             )}
             <div className='flex flex-col overflow-y-auto overflow-x-hidden h-[calc(100vh-9rem)]'>
                 { loading ? (<div className='flex justify-center items-center mt-8'><SyncLoader color='white' /></div>) : (
