@@ -14,8 +14,8 @@ import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 
 
 const StockView = (props) => {
-  const startDate = '2020-01-01'
-  const endDate = new Date().toJSON().slice(0, 10);
+  const [startDate, setStartDate] = useState('2024-01-01')
+  const [endDate, setEndDate] = useState(new Date().toJSON().slice(0, 10));
 
   const {user, authTokens} = useContext(AuthContext)
   const [loading, setLoading] = useState(false)
@@ -126,6 +126,19 @@ const StockView = (props) => {
     setFavourite(!isFavourite)
   }
 
+  const handleStartDate = (e) => {
+    // console.log(e.target.value)
+    setStartDate(e.target.value)
+  }
+  const handleEndDate = (e) => {
+    // console.log(e.target.value)
+    setEndDate(e.target.value)
+  }
+  const handleApplyFilters = () => {
+    setLoading(true)
+    fetchDailyPrice(props.security)
+  }
+
 
   //! Make it fill to the right.
   return (
@@ -149,15 +162,29 @@ const StockView = (props) => {
         </div>
       )}
       {(props.security != undefined) ? (
-        (loading) ? (<div className='flex grow justify-center items-center'><SyncLoader color='white' /></div>) : (
-          <div className='flex grow justify-center overflow-y-auto overflow-x-auto me-6'>
-            <CandleStick series={[
-              {
-                name: 'Stock Data',
-                data: seriesData
-              }
-            ]} 
-            />
+        (loading) ? (<div className='flex grow justify-center items-center'><SyncLoader color='white' /></div>
+        ) : (
+          <div className='flex flex-col grow me-6'>
+            <div className='flex items-center w-full mx-2 mt-2 mb-4'>
+              <div className='flex grow items-center'>
+                {/* <label htmlFor='startDate' className='text-grey'>From</label> */}
+                <input id='startDate' onChange={handleStartDate} className='text-grey p-1 rounded-lg shadow-lg border border-grey' type="date" value={startDate} />
+                <label htmlFor='endDate' className='text-grey ms-4'>To</label>
+                <input id='endDate' onChange={handleEndDate} className='text-grey ms-4 p-1 rounded-lg shadow-lg border border-grey' type="date" value={endDate} />
+              </div>
+              <div className='ms-8'>
+                <button onClick={() => handleApplyFilters()} className='bg-dark text-grey font-bold py-1 px-3 rounded-lg shadow-lg border border-grey'>Apply</button>
+              </div>
+            </div>
+            <div className='flex overflow-y-auto overflow-x-auto w-full'>
+              <CandleStick series={[
+                {
+                  name: 'Stock Data',
+                  data: seriesData
+                }
+              ]} 
+              />
+            </div>
           </div>
         )
       ) : (
