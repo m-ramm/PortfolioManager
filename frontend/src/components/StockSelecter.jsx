@@ -62,7 +62,7 @@ const StockSelecter = props => {
             </div>
             {!isCollapsed && (
                 <div className='flex justify-center items-center mt-2 mb-4'>
-                        <input className={`bg-dark text-white font-bold p-2`} type="text" value={searchVal} onChange={handleInputChange} placeholder='Search...' />
+                        <input className={`bg-dark text-white font-bold p-2 rounded-lg shadow-lg`} type="text" value={searchVal} onChange={handleInputChange} placeholder='Search...' />
                 </div>
             )}
             <div className='flex flex-col overflow-y-auto overflow-x-hidden h-[calc(100vh-9rem)]'>

@@ -13,8 +13,6 @@ const App = () => {
   let user = useContext(AuthContext)
   return (
     <div className='flex h-screen bg-dark overflow-x-auto'>
-      {//if this.location is LoginPage, then do not render NavBar 
-      }
       <Navbar />
         <Routes>
             <Route path="/login" element={<LoginPage />} ></Route>
