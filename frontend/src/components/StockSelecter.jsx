@@ -14,7 +14,9 @@ import { SyncLoader } from 'react-spinners'
 
 const StockSelecter = props => {
   const [stocks, setStocks] = useState([])
+  const [sectors, setSectors] = useState([])
   const [searchVal, setSearchVal] = useState('')
+  const [sectorVal, setSectorVal] = useState('')
   const [filteredStocks, setFilteredStocks] = useState([])
   const [loading, setLoading] = useState(true)
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -27,23 +29,47 @@ const StockSelecter = props => {
           data => {
               console.log(data)
               setStocks(data)
+              let unique = []
+              for(let i=0; i<data.length; i++){
+                // console.log(data[i].security_sector)
+                if (!unique.includes(data[i].security_sector)) {
+                    unique.push(data[i].security_sector)
+                }
+              }
+            //   console.log(unique)
+              setSectors(unique)
               setFilteredStocks(data)
               setLoading(false)
           }
       )
   }, [])
 
-  const handleInputChange = (e) => { 
+  const handleSearchInputChange = (e) => { 
     const searchTerm = e.target.value;
     setSearchVal(searchTerm)
 
     // filter the items using the apiUsers state
     const filteredItems = stocks.filter((stock) =>
-        stock.security_ticker.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        stock.security_name.toLowerCase().includes(searchTerm.toLowerCase())
+        (stock.security_ticker.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        stock.security_name.toLowerCase().includes(searchTerm.toLowerCase())) &&
+        stock.security_sector.toLowerCase().includes(sectorVal.toLowerCase())
     );
 
     setFilteredStocks(filteredItems);
+  }
+
+  const handleSectorInputChange = (e) => {
+    let sector;
+    (e.target.value == 'All') ? (sector = '') : (sector = e.target.value);
+    setSectorVal(sector)
+
+    const filteredItems = stocks.filter((stock) =>
+        (stock.security_ticker.toLowerCase().includes(searchVal.toLowerCase()) || 
+        stock.security_name.toLowerCase().includes(searchVal.toLowerCase())) &&
+        stock.security_sector.toLowerCase().includes(sector.toLowerCase())
+    );
+
+    setFilteredStocks(filteredItems)
   }
 
   return (
@@ -61,8 +87,16 @@ const StockSelecter = props => {
                 </button>
             </div>
             {!isCollapsed && (
-                <div className='flex justify-center items-center mt-2 mb-4'>
-                        <input className={`bg-dark text-white font-bold p-2 rounded-lg shadow-lg`} type="text" value={searchVal} onChange={handleInputChange} placeholder='Search...' />
+                <div className='flex flex-col justify-center items-center mt-2 mb-4'>
+                        <input className={`bg-dark text-white font-bold p-2 rounded-lg shadow-lg`} type="text" value={searchVal} onChange={handleSearchInputChange} placeholder='Search...' />
+                        <select name="sector" id="sector" className='bg-dark text-grey font-bold mt-3 p-2 rounded-lg shadow-lg' onChange={handleSectorInputChange}>
+                            <option value="All" selected="selected">All</option>
+                            {sectors.map((sector) => {
+                                return(
+                                    <option value={sector}>{sector}</option>
+                                )
+                            })}
+                        </select>
                 </div>
             )}
             <div className='flex flex-col overflow-y-auto overflow-x-hidden h-[calc(100vh-9rem)]'>
