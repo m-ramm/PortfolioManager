@@ -50,7 +50,7 @@ const StockCard = (props) => {
             ) : (
                 <>
                     {(lastDailyPrices == null) ? (
-                        <div className='flex flex-col bg-darker w-90 p-4 my-4 rounded-lg shadow-lg border border-dark   '></div>
+                        <div className='flex flex-col bg-darker w-90 p-4 my-4 rounded-lg shadow-lg border border-dark'></div>
                     ) : (
                         <div className={`flex flex-col bg-darker w-90 p-4 my-4 rounded-lg shadow-lg transition-colors duration-300 ${props.isActive ? "border border-white" : "border border-dark hover:border-white"}`} onClick={() => props.handleSecurityChange(security)}>
 

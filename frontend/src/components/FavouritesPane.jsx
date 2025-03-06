@@ -1,6 +1,8 @@
 import React from 'react'
 import StockCard from './StockCard'
 
+// TODO: Provide more filter / search options for favourites bar, similar to StockSelector?
+
 const FavouritesPane = (props) => {
     console.log(props.favouriteStocks)
     const favourites = props.favouriteStocks.sort((a, b) => a.security_id - b.security_id);
