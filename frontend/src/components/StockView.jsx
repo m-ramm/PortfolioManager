@@ -38,9 +38,11 @@ const StockView = (props) => {
   }])
 
  useEffect(()=> {
-  checkFavourite(user, props.security, props.favourites)
-  setLoading(true)
-  fetchDailyPrice(props.security)
+  if (props.security != undefined){
+    checkFavourite(user, props.security, props.favourites)
+    setLoading(true)
+    fetchDailyPrice(props.security)
+  }
  }, [props.security])
 
   const checkFavourite = (user, security, favouritesList) => {
@@ -69,7 +71,7 @@ const StockView = (props) => {
           data.forEach(element => {
             output.push({
               x:[
-                new Date(element.dp_date)
+                new Date(element.dp_date).toJSON().slice(0,10)
               ],
               y: [
                 element.dp_open,
