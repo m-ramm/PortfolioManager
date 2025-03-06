@@ -214,8 +214,10 @@ class Users(models.Model):
 
 class UserFavouriteSecurities(models.Model):
     # user = models.ForeignKey('Users', models.DO_NOTHING)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    security = models.ForeignKey('Security', models.DO_NOTHING, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    security = models.OneToOneField('Security', on_delete=models.DO_NOTHING, null=True)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    # security = models.ForeignKey('Security', models.DO_NOTHING, null=True)
         
     class Meta:
         # Change following to false again?
