@@ -92,17 +92,17 @@ const StockSelecter = props => {
                     <div className='flex flex-col justify-center items-center mt-2 mb-4'>
                             <input className={`bg-dark text-white font-bold p-2 rounded-lg shadow-lg`} type="text" value={searchVal} onChange={handleSearchInputChange} placeholder='Search...' />
                             <select name="sector" id="sector" className='bg-dark text-grey font-bold mt-3 p-2 rounded-lg shadow-lg' onChange={handleSectorInputChange}>
-                                <option value="All" selected="selected">All</option>
-                                {sectors.map((sector) => {
+                                <option value="All" selected="selected" key={-1}>All</option>
+                                {sectors.map((sector,index) => {
                                     return(
-                                        <option value={sector}>{sector}</option>
+                                        <option value={sector} key={index}>{sector}</option>
                                     )
                                 })}
                             </select>
                     </div>
                 )
             )}
-            <div className='flex flex-col overflow-y-auto overflow-x-hidden h-[calc(100vh-9rem)]'>
+            <div className='flex flex-col overflow-y-auto overflow-x-hidden h-[calc(100vh-12rem)]'>
                 { loading ? (<div className='flex justify-center items-center mt-8'><SyncLoader color='white' /></div>) : (
                     
                     (filteredStocks.length) !== 0 ? (

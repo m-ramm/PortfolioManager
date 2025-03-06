@@ -54,7 +54,7 @@ const Navbar = () => {
                                         <RxHamburgerMenu size="24px" />
                                     </button>
                                     )}
-                                    {!isCollapsed && <span className="text-lg font-bold text-white ml-2">Finance App</span>}
+                                    {!isCollapsed && <span className="text-lg font-bold text-white ml-2">Portfolio Manager</span>}
                                 </div>
                                 {!isCollapsed && (
                                     <button onClick={() => setIsCollapsed(!isCollapsed)} className="text-grey hover:text-white p-2 ml-0 transition-all duration-300 ease-in-out hover:bg-gray-600 rounded-full">
