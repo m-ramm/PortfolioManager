@@ -2,7 +2,9 @@ import React from 'react'
 import StockCard from './StockCard'
 
 const FavouritesPane = (props) => {
-    const favourites = props.favouriteStocks
+    console.log(props.favouriteStocks)
+    const favourites = props.favouriteStocks.sort((a, b) => a.security_id - b.security_id);
+    console.log(favourites)
     return (
         <div className='flex flex-col bg-darker justify-start w-100 h-[calc(100vh-2rem)] my-4 rounded-lg shadow-lg mx-2'>
             <div className='font-bold text-lg text-white mt-4 mb-2 px-4 py-2'>Favourites</div>
