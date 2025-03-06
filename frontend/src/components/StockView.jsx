@@ -48,11 +48,13 @@ const StockView = (props) => {
   const checkFavourite = (user, security, favouritesList) => {
     for (let i=0;i<favouritesList.length;i++){
       if (favouritesList[i].user == user.user_id && favouritesList[i].security == security.security_id){
+        console.log('here')
         setFavourite(true)
-      } else {
-        setFavourite(false)
-      }
+        return;
+      } 
     }
+    setFavourite(false)
+    return;
   }
 
   const fetchDailyPrice = (security) => {
