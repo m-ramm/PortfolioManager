@@ -28,6 +28,10 @@ def apiOverview(request):
         'Get Period of Daily Prices' : '/get-period-dailyprices/<str:pk>/<str:start>/<str:end>/',
         'Get Portfolios (requires Authentication)': '/get-portfolios/',
         'Add Portfolio (requires Authentication)': '/add-portfolio/<str:portfolio_name>/',
+        'Delete Portfolio (requires Authentication)': '/delete-portfolio/<str:portfolio_id>/',
+        'Edit Portfolio (requires Authentication)': '/edit-portfolio/<str:portfolio_id>/<str:portfolio_name>/',
+        'Get Portfolio Securities (requires Authentication)': '/get-portfoliosecurities/<str:portfolio_id>/',
+        'Set Portfolio Security (requires Authentication)': '/set-portfoliosecurity/<str:portfolio_id>/<str:security_id>/',
         'Get Favourites (requires Authentication)': '/get-favourites/',
         'Set Favourite (requires Authentication)': '/set-favourite/<str:security_id>/',
         'Note' : 'Dates in format yyyy-mm-dd'
@@ -110,6 +114,54 @@ def addPortfolio(request, portfolio_name):
     except Exception as e:
         print(e)
         return Response(e)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def deletePortfolio(request, portfolio_id):
+    user = request.user
+    try:
+        portfolio = Portfolio.objects.get(user=user, portfolio_id=portfolio_id)
+        portfolio.delete()
+        return Response('Successfully deleted portfolio')
+    except ObjectDoesNotExist as e:
+        return Response("No Portfolio to delete")
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def editPortfolio(request, portfolio_id, portfolio_name):
+    user = request.user
+    try:
+        portfolio = Portfolio.objects.get(user=user, portfolio_id=portfolio_id)
+        portfolio.update(portfolio_name=portfolio_name)
+        return Response('Successfully edited portfolio')
+    except ObjectDoesNotExist as e:
+        return Response("No Portfolio found to edit")
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getPortfolioSecurities(request, portfolio_id):
+    user = request.user
+    portfolio = Portfolio.objects.get(portfolio_id=portfolio_id)
+    try:
+        portfolios = PortfolioSecurity.objects.all().filter(user=user, portfolio=portfolio)
+        serializer = PortfolioSecuritySerializer(portfolios, many=True)
+        return Response(serializer.data)
+    except ObjectDoesNotExist: 
+        return Response("Cannot find any securities for selected portfolio")
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def setPortfolioSecurity(request, portfolio_id, security_id):
+    user = request.user
+    portfolio = Portfolio.objects.get(portfolio_id=portfolio_id)
+    security = Security.objects.get(security_id=security_id)
+    try:
+        portsec = PortfolioSecurity.objects.get(user=user,security=security, portfolio=portfolio)
+        portsec.delete()
+        return Response('Successfully deleted security from portfolio')
+    except ObjectDoesNotExist as e:
+        portsec = PortfolioSecurity.objects.create(user=user, security=security, portfolio=portfolio)
+        return Response("Successfully added security to portfolio")
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

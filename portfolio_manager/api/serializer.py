@@ -18,6 +18,11 @@ class PortfolioSerializer(serializers.ModelSerializer):
         model = Portfolio
         fields = '__all__'
 
+class PortfolioSecuritySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PortfolioSecurity
+        fields = '__all__'
+
 class UserFavouriteSecuritiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserFavouriteSecurities
