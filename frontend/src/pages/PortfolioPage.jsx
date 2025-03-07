@@ -97,9 +97,9 @@ const PortfolioPage = () => {
     
       return (
         <div className='flex w-full'>
-            <div className='flex flex-col bg-darker w-100 rounded-lg mx-2 my-4 p-2'>
-                <div className='text-white text-lg font-bold ms-2 my-4'>Portfolios</div>
-                <div className='flex flex-col justify-center items-center mx-2'>
+            <div className='flex flex-col bg-darker w-70 rounded-lg mx-2 my-4 p-2'>
+                <div className='text-white text-lg font-bold ms-2 my-4'>Portfolio Selector</div>
+                <div className='flex flex-col justify-center items-center mx-2 overflow-y-auto'>
                     {portfolios.map((portfolio, index) => { return(<PortfolioCard key={index} portfolio={portfolio} isActive={selectedPortfolio == portfolio} handleChangePortfolio={handleChangePortfolio} />) } )}
                     <IconContext.Provider value={{ size:"40px", className: "transition-colors duration-300 text-grey hover:text-white" }}>
                         <button className='my-4' onClick={() => setModalOpen(true)}><FaCirclePlus /></button>
