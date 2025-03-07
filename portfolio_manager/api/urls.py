@@ -15,6 +15,7 @@ urlpatterns = [
     path("get-dailyprices/<str:pk>/", views.getDailyPrices, name="getDailyPrices"),
     path("get-period-dailyprices/<str:pk>/<str:start>/<str:end>/", views.getPeriodDailyPrices, name="getPeriodDailyPrices"),
     path("get-portfolios/", views.getPortfolios, name="getPortfolios"),
+    path("add-portfolio/<str:portfolio_name>/", views.addPortfolio, name="addPortfolio"),
     path("get-favourites/", views.getFavourites, name="getFavourites"),
     path("set-favourite/<str:security_id>/", views.setFavourite, name="setFavourite"),
     path("token/", TokenObtainPairView.as_view(), name='tokenObtainPair'),

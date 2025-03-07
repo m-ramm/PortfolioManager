@@ -23,12 +23,13 @@ def apiOverview(request):
         'All Securities' : '/get-securities/',
         'Security' : '/get-security/<str:pk>/',
         'Add Security' : '/add-security/',
-        'Update Security' : '/update-security/<str:pk>',
-        'Get All Security Daily Prices' : '/get-dailyprices/<str:pk>',
-        'Get Period of Daily Prices' : '/get-period-dailyprices/<str:pk>/<str:start>/<str:end>',
-        'Get Portfolios (requires Authentication)': '/get-portfolios',
-        'Get Favourites (requires Authentication)': '/get-favourites',
-        'Set Favourite (requires Authentication)': '/set-favourite/<str:security_id>',
+        'Update Security' : '/update-security/<str:pk>/',
+        'Get All Security Daily Prices' : '/get-dailyprices/<str:pk>/',
+        'Get Period of Daily Prices' : '/get-period-dailyprices/<str:pk>/<str:start>/<str:end>/',
+        'Get Portfolios (requires Authentication)': '/get-portfolios/',
+        'Add Portfolio (requires Authentication)': '/add-portfolio/<str:portfolio_name>/',
+        'Get Favourites (requires Authentication)': '/get-favourites/',
+        'Set Favourite (requires Authentication)': '/set-favourite/<str:security_id>/',
         'Note' : 'Dates in format yyyy-mm-dd'
     }
     return Response(api_urls)
@@ -88,10 +89,27 @@ def getPeriodDailyPrices(request, pk, start, end):
 @permission_classes([IsAuthenticated])
 def getPortfolios(request):
     user = request.user
-    portfolios = user.portfolio_set.all()
-    # portfolios = Portfolio.objects.all()
-    serializer = PortfolioSerializer(portfolios, many=True)
-    return Response(serializer.data)
+    try:
+        # portfolios = user.portfolio_set.all()
+        portfolios = Portfolio.objects.all().filter(user=user)
+        # portfolios = Portfolio.objects.all()
+        serializer = PortfolioSerializer(portfolios, many=True)
+        return Response(serializer.data)
+    except ObjectDoesNotExist:
+        return Response("Cannot find any portfolios for selected user")
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addPortfolio(request, portfolio_name):
+    user = request.user
+    try:
+        # portfolios = user.portfolio_set.all()
+        portfolio = Portfolio.objects.create(user=user, portfolio_name=portfolio_name)
+        print(portfolio)
+        return Response("successfully added portfolio")
+    except Exception as e:
+        print(e)
+        return Response(e)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
