@@ -101,6 +101,8 @@ const Navbar = () => {
         isOpen={isLogoutModalOpen}
         onClose={() => setLogoutModalOpen(false)}
         onConfirm={handleLogout}
+        heading={'Confirm Logout'}
+        displayText={'Are you sure you want to logout?'}
         />
     </div>
   )
