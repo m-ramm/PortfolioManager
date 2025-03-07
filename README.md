@@ -1,4 +1,6 @@
 # PortfolioManager
+## Deployment
+Deployed at xxxxxxxxx
 
 ## Personal Machine Set-up
 To source the data, can use yfinance library or TIINGO. I would recommend yfinance, does not require API key and does not explicitly limit free usage
@@ -11,5 +13,6 @@ To source the data, can use yfinance library or TIINGO. I would recommend yfinan
 - Create TIINGO account (if applicable) and retrieve API key - ([TIINGO](https://www.tiingo.com/))
 - [ Optional ] Retrieve up to date CSV/EXCEL file for supported tickers, put in ingestion directory. Current is only relevant to June 2023 - ([Market Index](https://www.marketindex.com.au/data-downloads))
 - Add database credentials/info and TIINGO api key (if applicable) to .env
-- Run all ingestion.ipynb notebook
-- Run application
+- Run all on ingestion.ipynb notebook
+- Enter django project directory and run 'python manage.py runserver'
+- Enter React project directory and run 'npm install' then 'npm run dev'
