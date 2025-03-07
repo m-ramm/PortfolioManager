@@ -162,7 +162,7 @@ class Portfolio(models.Model):
     portfolio_name = models.CharField(max_length=50)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'portfolio'
 
 
@@ -172,7 +172,7 @@ class PortfolioSecurity(models.Model):
     portfolio_security_volume = models.IntegerField()
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'portfolio_security'
         unique_together = (('portfolio', 'security'),)
 
@@ -209,7 +209,7 @@ class Users(models.Model):
     password = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'users'
 
 class UserFavouriteSecurities(models.Model):
