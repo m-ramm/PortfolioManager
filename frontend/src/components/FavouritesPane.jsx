@@ -9,14 +9,17 @@ const FavouritesPane = (props) => {
     console.log(favourites)
     return (
         <div className='flex flex-col bg-darker justify-start w-100 h-[calc(100vh-2rem)] my-4 rounded-lg shadow-lg mx-2'>
-            <div className='font-bold text-lg text-white mt-4 mb-2 px-4 py-2'>Favourites</div>
-            <div className='flex flex-col justify-center items-center overflow-y-auto'>
-                {
+            {props.handleSecurityChange!=null ? (<div className='font-bold text-lg text-white mt-4 mb-2 px-4 py-2'>Favourites</div>):(<div></div>)}
+            <div className='flex flex-col grow justify-start items-center overflow-y-auto'>
+                { (favourites.length <=0 || favourites == null) ? (
+                    (props.handleSecurityChange!=null) ? (<div className='text-white font-bold grow'>Please Choose Some Favourites</div>) : (<div className='text-white grow'>Please add to this portfolio</div>)
+                ) : (
                     favourites.map((security, i) => {
                         return(
                         <StockCard key={i} security={security} isActive={props.security == security} handleSecurityChange={props.handleSecurityChange}></StockCard>
                         )
                     })
+                )
                 }
             </div>
         </div>
