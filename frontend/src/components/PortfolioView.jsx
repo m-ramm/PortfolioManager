@@ -3,6 +3,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { IconContext } from 'react-icons';
 import ConfirmationModal from '../components/ConfirmationModal';
 import TextModal from '../components/TextModal';
+import FavouritesPane from './FavouritesPane';
 
 const PortfolioView = (props) => {
     const portfolio = props.portfolio
@@ -10,6 +11,7 @@ const PortfolioView = (props) => {
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false)
     const [isEditModalOpen, setEditModalOpen] = useState(false)
     const [editedPortfolioName, setEditedPortfolioName] = useState('')
+    const [stocks, setStocks] = useState([])
 
     useEffect(() => {
         setLoading(true)
@@ -19,16 +21,62 @@ const PortfolioView = (props) => {
 
     const fetchPortfolioSecurities = () => {
         // fetch portfoliosecurities using portfolio
+        if (portfolio != undefined || portfolio != null){
+            fetch(`http://127.0.0.1:8000/api/get-portfoliosecurities/${portfolio.portfolio_id}/`, {
+                method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + String(authTokens.access)
+              }
+            })
+            .then(
+              response => response.json()
+            ).then(
+              data => {
+                console.log(data)
+                setStocks(data)
+              }
+            )
+        }
     }
 
     const handleDeletePortfolio = () => {
         //fetch delete
-        props.handleChangePortfolio(undefined)
+        fetch(`http://127.0.0.1:8000/api/delete-portfolio/${portfolio.portfolio_id}/`, {
+            method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + String(authTokens.access)
+          }
+        })
+        .then(
+          response => response.json()
+        ).then(
+          data => {
+            console.log(data)
+            setDeleteModalOpen(false)
+            props.handleChangePortfolio(undefined)
+          }
+        )
     }
 
     const handleEditPortfolio = () => {
         // fetch edit with editedPortfolioName useState
-        setModalOpen(false)
+        fetch(`http://127.0.0.1:8000/api/edit-portfolio/${portfolio.portfolio_id}/${editedPortfolioName}/`, {
+            method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + String(authTokens.access)
+          }
+        })
+        .then(
+          response => response.json()
+        ).then(
+          data => {
+            console.log(data)
+            setEditModalOpen(false)
+          }
+        )
     }
 
     return (
@@ -40,7 +88,7 @@ const PortfolioView = (props) => {
                     <button onClick={()=>setEditModalOpen(true)} className='ms-6 mt-2 text-white cursor-pointer'><MdEdit /></button>        
                 </IconContext.Provider>
                 <IconContext.Provider value={{ size:"25px", className: "transition-colors duration-300 text-white hover:text-red-400" }}>
-                    <button onClick={()=>deletePortfolio()} className='ms-6 mt-2 text-white cursor-pointer'><MdDelete /></button>        
+                    <button onClick={()=>setDeleteModalOpen(true)} className='ms-6 mt-2 text-white cursor-pointer'><MdDelete /></button>        
                 </IconContext.Provider>
             </div>
             ) : (
@@ -51,7 +99,7 @@ const PortfolioView = (props) => {
             {(portfolio != undefined) ? (
                 (loading) ? (<div className='flex grow justify-center items-center'><SyncLoader color='white' /></div>
                 ) : (
-                    <div className='flex grow text-white'>...</div>
+                    <FavouritesPane favouriteStocks={stocks} security={undefined} handleSecurityChange={null} />
                 )
             ) : (
                 <div className='flex grow items-center justify-center text-white font-bold'>Please Select a Portfolio</div>
