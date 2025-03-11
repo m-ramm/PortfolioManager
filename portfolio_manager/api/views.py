@@ -138,29 +138,29 @@ def editPortfolio(request, portfolio_id, portfolio_name):
         return Response("No Portfolio found to edit")
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def getPortfolioSecurities(request, portfolio_id):
     user = request.user
     portfolio = Portfolio.objects.get(portfolio_id=portfolio_id)
     try:
-        portfolios = PortfolioSecurity.objects.all().filter(user=user, portfolio=portfolio)
-        serializer = PortfolioSecuritySerializer(portfolios, many=True)
+        portfolioSecurities = PortfolioSecurity.objects.all().filter(portfolio=portfolio)
+        serializer = PortfolioSecuritySerializer(portfolioSecurities, many=True)
         return Response(serializer.data)
     except ObjectDoesNotExist: 
         return Response("Cannot find any securities for selected portfolio")
     
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def setPortfolioSecurity(request, portfolio_id, security_id):
     user = request.user
     portfolio = Portfolio.objects.get(portfolio_id=portfolio_id)
     security = Security.objects.get(security_id=security_id)
     try:
-        portsec = PortfolioSecurity.objects.get(user=user,security=security, portfolio=portfolio)
+        portsec = PortfolioSecurity.objects.get(security=security, portfolio=portfolio)
         portsec.delete()
         return Response('Successfully deleted security from portfolio')
     except ObjectDoesNotExist as e:
-        portsec = PortfolioSecurity.objects.create(user=user, security=security, portfolio=portfolio)
+        portsec = PortfolioSecurity.objects.create(security=security, portfolio=portfolio)
         return Response("Successfully added security to portfolio")
 
 @api_view(['GET'])

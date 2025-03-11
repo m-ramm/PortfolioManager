@@ -169,7 +169,8 @@ class Portfolio(models.Model):
 class PortfolioSecurity(models.Model):
     portfolio = models.OneToOneField(Portfolio, models.DO_NOTHING, primary_key=True)  # The composite primary key (portfolio_id, security_id) found, that is not supported. The first column is selected.
     security = models.ForeignKey('Security', models.DO_NOTHING)
-    portfolio_security_volume = models.IntegerField()
+    portfolio_security_volume = models.IntegerField(default=0)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     class Meta:
         managed = True
