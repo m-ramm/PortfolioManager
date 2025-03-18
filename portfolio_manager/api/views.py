@@ -14,6 +14,7 @@ from django.views.decorators.http import require_POST
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import User
 
 
 @api_view(['GET'])
@@ -194,6 +195,21 @@ def setFavourite(request, security_id):
         # favourite.save()
         return Response("Successfully added favourite")
 
+@api_view(['POST'])
+def signup(request):
+    body = json.loads(request.body)
+    user = User.objects.create_user(username=body['username'],
+                                 email=body['email'],
+                                 password=body['password'])
+    return Response("Successfully signed up!")
+    # serializer = UserSerializer(data=request.data)
+    # if serializer.is_valid(raise_exception=True):
+    #     user = serializer.save()
+    #     # return Response(TokenObtainPairView(user=user))
+    #     print(user)
+    #     print(serializer)
+    #     return Response("Successfully signed up!")
+    # return Response("Failed signup")
 
 # @require_POST
 # def loginView(request):

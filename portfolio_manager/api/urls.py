@@ -22,6 +22,7 @@ urlpatterns = [
     path("set-portfoliosecurity/<str:portfolio_id>/<str:security_id>/", views.setPortfolioSecurity, name="setPortfolioSecurity"),
     path("get-favourites/", views.getFavourites, name="getFavourites"),
     path("set-favourite/<str:security_id>/", views.setFavourite, name="setFavourite"),
+    path("signup/", views.signup, name="signup"),
     path("token/", TokenObtainPairView.as_view(), name='tokenObtainPair'),
     path("token/refresh/", TokenRefreshView.as_view(), name='tokenRefresh')
     
