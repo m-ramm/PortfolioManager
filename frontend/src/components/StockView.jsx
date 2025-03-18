@@ -9,7 +9,6 @@ import SelectModal from './SelectModal';
 
 /*
  TODO:
- - find better way of handling startDate and endDate (allow User to adjust?)
  - fix overflow-x-auto of the graph when the sidebars are collapsed
  
  */
@@ -342,13 +341,13 @@ const StockView = (props) => {
           { 
           //(loading) ? (<div className=''><SyncLoader color='white' /></div>
           //) : ( 
-            (isFavourite) ? (<button onClick={()=>handleFavourite()} className='ms-6 mt-2 text-white cursor-pointer'><MdFavorite size={'25px'}/></button>
+            (isFavourite) ? (<button onClick={()=>handleFavourite()} className='ms-6 mt-2 text-grey cursor-pointer transition-colors duration-300 hover:text-white'><MdFavorite size={'25px'}/></button>
             ) : (
-              <button onClick={()=>handleFavourite()} className='ms-6 mt-2 text-white cursor-pointer'><MdFavoriteBorder size={'25px'}/></button>
+              <button onClick={()=>handleFavourite()} className='ms-6 mt-2 text-grey cursor-pointer transition-colors duration-300 hover:text-white'><MdFavoriteBorder size={'25px'}/></button>
             )
           //)
           }
-          <button onClick={setSelectModalOpen} className='ms-6 mt-2 text-white cursor-pointer'><FaCirclePlus size={'25px'}/></button>
+          <button onClick={setSelectModalOpen} className='ms-6 mt-2 text-grey cursor-pointer transition-colors duration-300 hover:text-white'><FaCirclePlus size={'25px'}/></button>
         </div>
       ) : (
         <div className='flex items-center'>
@@ -391,7 +390,7 @@ const StockView = (props) => {
             isOpen={isSelectModalOpen}
             onClose={() => setSelectModalOpen(false)}
             onConfirm={handleConfirmPortfolioStock}
-            heading={`Add ${props.security?.security_name} to:`}
+            heading={`Add "${props.security?.security_name}" to:`}
             displayText={//`Which portfolio would you like to add '${props.security?.security_name}' to?`
               ''}
             options={validPortfolios.map(({portfolio_id})=>portfolio_id)}
