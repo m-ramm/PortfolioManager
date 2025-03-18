@@ -40,6 +40,33 @@ export const AuthProvider = ({children}) => {
         localStorage.removeItem('authTokens')
     }
 
+    const signupUser = async (e) => {
+        e.preventDefault()
+        let response = await fetch("http://127.0.0.1:8000/api/signup/", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value, 'email': e.target.email.value})
+        })
+        let data = await response.json()
+
+        if(response.status == 200){
+            setAuthTokens(null)
+            setUser(null)
+            localStorage.removeItem('authTokens')
+            alert('Successfully Signed Up! Please Login...')
+            // console.log(data)
+            // setAuthTokens(data)
+            // setUser(jwtDecode(data.access))
+            // localStorage.setItem('authTokens', JSON.stringify(data))
+            navigate(0)
+        } else{
+            alert('Something went wrong!')
+        }
+
+    }
+
     const updateToken = async () => {
         console.log('update token called')
         let response = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
@@ -72,6 +99,7 @@ export const AuthProvider = ({children}) => {
         authTokens:authTokens,
         loginUser:loginUser,
         logoutUser:logoutUser,
+        signupUser:signupUser,
 
     }
 
