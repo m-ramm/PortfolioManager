@@ -103,7 +103,7 @@ const HomePage = () => {
       {(loading) ? (<div className='flex justify-center items-center mt-8'><SyncLoader color='white' /></div>
       ) : (
         <>
-          {(<FavouritesPane security={selectedSecurity} favouriteStocks={intersectionStocks} handleSecurityChange={handleSecurityChange}/>)}
+          {(<FavouritesPane security={selectedSecurity} favouriteStocks={intersectionStocks} handleSecurityChange={handleSecurityChange} isPortfolio={false}/>)}
           <StockView favourites={favourites} security={selectedSecurity}/>
         </>
       )}

@@ -4,15 +4,15 @@ import StockCard from './StockCard'
 // TODO: Provide more filter / search options for favourites bar, similar to StockSelector?
 
 const FavouritesPane = (props) => {
-    console.log(props.favouriteStocks)
+    // console.log(props.favouriteStocks)
     const favourites = props.favouriteStocks.sort((a, b) => a.security_id - b.security_id);
-    console.log(favourites)
+    // console.log(favourites)
     return (
         <div className='flex flex-col bg-darker justify-start w-100 h-[calc(100vh-2rem)] my-4 rounded-lg shadow-lg mx-2'>
-            {props.handleSecurityChange!=null ? (<div className='font-bold text-lg text-white mt-4 mb-2 px-4 py-2'>Favourites</div>):(<div></div>)}
+            {(!props.isPortfolio) ? (<div className='font-bold text-lg text-white mt-4 mb-2 px-4 py-2'>Favourites</div>):(<div></div>)}
             <div className='flex flex-col grow justify-start items-center overflow-y-auto'>
                 { (favourites.length <=0 || favourites == null) ? (
-                    (props.handleSecurityChange!=null) ? (<div className='text-white font-bold grow'>Please Choose Some Favourites</div>) : (<div className='text-white grow'>Please add to this portfolio</div>)
+                    (!props.isPortfolio) ? (<div className='text-white font-bold grow'>Please Choose Some Favourites</div>) : (<div className='text-white grow'>Please add to this portfolio</div>)
                 ) : (
                     favourites.map((security, i) => {
                         return(
